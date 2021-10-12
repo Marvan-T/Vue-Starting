@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <Header title="Task Tracker"/>
+    <AddTask @add-task="addTask"/>
     <Tasks @delete-task="deleteTask" @toggle-reminder="toggleReminder" :tasks="tasks"/> <!--send down to tasks (it's dynamic you are binding data defined within this component-->
   </div>
 </template>
@@ -8,12 +9,14 @@
 <script>
 import Header from './components/Header'
 import Tasks from './components/Tasks'
+import AddTask from "./components/AddTask";
 
 export default {
   name: 'App',
   components: {
       Header,
-      Tasks
+      Tasks,
+      AddTask
   },
   data() {
     return {
@@ -21,6 +24,9 @@ export default {
     }
   },
   methods: {
+    addTask(task) { //comming from the emit in AddTask (new-task)
+      this.tasks = [...this.tasks, task] //add the existing tasks and the new task to the end
+    },
     deleteTask(id) {
       if (confirm('Are you sure you want to delete this task?')) {
         this.tasks = this.tasks.filter((task) => task.id !== id);
@@ -31,7 +37,7 @@ export default {
         task.id === id ? {...task, reminder: !task.reminder} : task //go through each task and compare the id of them (if the id is the same return an array object that have the initial
                                                                     //initial properties of thee task, set the reminder to to the opposite of the current task reminder
       )
-    }
+    },
   },
   created() { //live cycle methods that you can hook into (when this component is created do this)
     this.tasks = [
