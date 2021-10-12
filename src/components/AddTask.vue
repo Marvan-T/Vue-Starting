@@ -53,7 +53,8 @@ export default {
       this.day = ''
       this.reminder = false
     }
-  }
+  },
+  emits: ['add-task']
 }
 </script>
 

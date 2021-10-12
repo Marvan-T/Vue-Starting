@@ -1,7 +1,9 @@
 <template>
   <div class="container">
-    <Header title="Task Tracker"/>
-    <AddTask @add-task="addTask"/>
+    <Header @show-add-task="toggleAddTask" title="Task Tracker" :show-add-task="showAddTask"/> <!-- pass the prop show-add-task as the value of showAddTask-->
+    <div v-show="showAddTask"> <!--condition to show a component or not (v-if could be used here as well)-->
+      <AddTask @add-task="addTask"/>
+    </div>
     <Tasks @delete-task="deleteTask" @toggle-reminder="toggleReminder" :tasks="tasks"/> <!--send down to tasks (it's dynamic you are binding data defined within this component-->
   </div>
 </template>
@@ -20,7 +22,8 @@ export default {
   },
   data() {
     return {
-      tasks: []
+      tasks: [],
+      showAddTask: false
     }
   },
   methods: {
@@ -38,6 +41,9 @@ export default {
                                                                     //initial properties of thee task, set the reminder to to the opposite of the current task reminder
       )
     },
+    toggleAddTask() {
+      this.showAddTask = !this.showAddTask
+    }
   },
   created() { //live cycle methods that you can hook into (when this component is created do this)
     this.tasks = [
